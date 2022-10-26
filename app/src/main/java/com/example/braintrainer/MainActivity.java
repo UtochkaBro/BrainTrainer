@@ -2,6 +2,7 @@ package com.example.braintrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -60,7 +61,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
+                gameOver = true;
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                int max = preferences.getInt("max", 0);
+                if (countOfRightAnswers >= max) {
+                    preferences.edit().putInt("max", countOfRightAnswers).apply();
+                }
+                Intent intent = new Intent(MainActivity.this, ScoreActivity.class);
+                intent.putExtra("result", countOfRightAnswers);
+                startActivity(intent);
             }
         };
         timer.start();
