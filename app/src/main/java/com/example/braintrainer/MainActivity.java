@@ -39,6 +39,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void generationQuestion(){
+        int a = (int) (Math.random()*(max - min +1) + min);
+        int b = (int) (Math.random()*(max - min +1) + min);
+        int mark = (int) (Math.random()*2);
+        isPositive = mark ==1;
+        if (isPositive) {
+            rightAnswer = a + b;
+            question = String.format("%s + %s", a, b);
+        } else {
+            rightAnswer = a-b;
+            question = String.format("%s - %s", a, b);
+        }
+        rightAnswerPosition =(int) (Math.random()*4);
+    }
 
+    private int generateWrongAnswer(){
+        int result;
+        do {
+            result = (int) (Math.random()*max*2+1) - (max-min);
+        } while (result == rightAnswer);
+        return result;
     }
 }
