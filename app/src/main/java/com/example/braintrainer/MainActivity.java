@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private int max = 30;
     private int countOfQuestions = 0;
     private int countOfRightAnswers = 0;
+    private boolean gameOver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
         options.add(textViewOpinion2);
         options.add(textViewOpinion3);
         playNext();
+        CountDownTimer timer = new CountDownTimer(6000,1000) {
+            @Override
+            public void onTick(long l) {
+                textViewTimer.setText(getTime(l));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+        timer.start();
     }
 
     private void playNext(){
@@ -98,16 +111,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAnswer(View view){
-        TextView textView = (TextView) view;
-        String answer = textView.getText().toString();
-        int chosenAnswer = Integer.parseInt(answer);
-        if (chosenAnswer == rightAnswer) {
-            countOfRightAnswers++;
-            Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Неверно", Toast.LENGTH_SHORT).show();
+        if (!gameOver) {
+            TextView textView = (TextView) view;
+            String answer = textView.getText().toString();
+            int chosenAnswer = Integer.parseInt(answer);
+            if (chosenAnswer == rightAnswer) {
+                countOfRightAnswers++;
+                Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Неверно", Toast.LENGTH_SHORT).show();
+            }
+            countOfQuestions++;
+            playNext();
         }
-        countOfQuestions++;
-        playNext();
     }
 }
